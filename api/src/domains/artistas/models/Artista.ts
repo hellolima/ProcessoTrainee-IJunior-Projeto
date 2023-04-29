@@ -1,24 +1,31 @@
-const sequelize = require("../../../../database/index");
-const {DataTypes} = require("sequelize");
+import { sequelize } from '../../../../database/index';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
 
-const Artista = sequelize.define("Artista", {
+export interface ArtistaInterface extends Model<InferAttributes<ArtistaInterface>, InferCreationAttributes<ArtistaInterface>>{
+    id: CreationOptional<string>;
+    nome: string;
+    nacionalidade: string;
+    foto: string; 
+}
+
+export const Artista = sequelize.define<ArtistaInterface>("Artista", {
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
     },
     nome:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     nacionalidade:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     foto:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     }
 });
 
@@ -27,5 +34,3 @@ const Artista = sequelize.define("Artista", {
 //         console.log("Tabela de Artistas foi (re)criada");
 //     })
 //     .catch((erro) => console.log(erro));
-    
-module.exports = Artista;
