@@ -1,8 +1,16 @@
-const sequelize = require('../../../../database/index');
-const {DataTypes} = require('sequelize');
-const cargoUsuarios = require("../../../../constants/cargoUsuario");
+import { sequelize } from '../../../../database/index';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
+import { cargoUsuario } from "../../../../constants/cargoUsuario";
 
-const Usuario = sequelize.define('Usuario', {
+export interface UserInterface extends Model<InferAttributes<UserInterface>, InferCreationAttributes<UserInterface>> {
+    id: CreationOptional<string>;
+    nome: string;
+    email: string;
+    senha: string;
+    cargo: string;
+  }
+
+export const Usuario = sequelize.define('Usuario', {
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -23,7 +31,7 @@ const Usuario = sequelize.define('Usuario', {
     },
     cargo:{
         type: DataTypes.ENUM({
-            values: [cargoUsuarios.ADMIN, cargoUsuarios.USER]
+            values: [cargoUsuario.ADMIN, cargoUsuario.USER]
         }),
     },
 }); 
@@ -33,5 +41,3 @@ const Usuario = sequelize.define('Usuario', {
 //         console.log('Tabela de Usuarios foi (re)criada');
 //     })
 //     .catch((err) => console.log(err));
-
-module.exports = Usuario;

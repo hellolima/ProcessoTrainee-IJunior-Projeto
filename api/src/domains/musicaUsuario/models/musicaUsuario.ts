@@ -1,9 +1,13 @@
-const {DataTypes} = require('sequelize');
-const sequelize = require('../../../../database/index');
-const Musica = require("../../musicas/models/Musica");
-const Usuario = require("../../usuarios/models/Usuario");
-  
-const musicaUsuario = sequelize.define('musicaUsuario', {
+import { sequelize } from '../../../../database/index';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
+import { Musica } from '../../musicas/models/Musica';
+import { Usuario } from '../../usuarios/models/Usuario';
+
+interface musicaUsuario extends Model<InferAttributes<musicaUsuario>, InferCreationAttributes<musicaUsuario>> {
+  id: CreationOptional<string>;
+}
+
+export const musicaUsuario = sequelize.define('musicaUsuario', {
     id:{
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -20,5 +24,3 @@ Musica.belongsToMany(Usuario, {through: musicaUsuario});
 //         console.log('Tabela musicaUsuario foi (re)criada');
 //     })
 //     .catch((err) => console.log(err));
-
-module.exports = musicaUsuario;

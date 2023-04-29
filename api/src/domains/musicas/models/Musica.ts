@@ -1,8 +1,15 @@
-const sequelize = require('../../../../database/index');
-const {DataTypes} = require('sequelize');
-const Artista =  require("../../artistas/models/Artista");
+import { sequelize } from '../../../../database/index';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
+import { Artista } from '../../artistas/models/Artista';
 
-const Musica = sequelize.define('Musica', {
+export interface MusicaInterface extends Model<InferAttributes<MusicaInterface>, InferCreationAttributes<MusicaInterface>> {
+  id: CreationOptional<string>;
+  titulo: string;
+  foto: string;
+  categoria: string;
+};
+
+export const Musica = sequelize.define('Musica', {
   id:{
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -29,7 +36,6 @@ Artista.hasMany(Musica, {
 });
 
 Musica.belongsTo(Artista, {
-  constraint: true,
   foreignKey: "artistaId",
   onDelete: "CASCADE"
 });
@@ -39,5 +45,3 @@ Musica.belongsTo(Artista, {
 //         console.log('Tabela de Musicas foi (re)criada');
 //     })
 //     .catch((err) => console.log(err));
-
-module.exports = Musica;
