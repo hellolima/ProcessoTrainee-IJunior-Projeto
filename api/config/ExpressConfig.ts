@@ -21,8 +21,8 @@ const options: CorsOptions = {
   
   app.use(express.json());
 
-  import { router as usuariosRouter } from '../src/domains/users/controllers/index';
-  app.use('/api/usuarios', usuarios);
+  import { router as usuariosRouter } from '../src/domains/usuarios/controllers/index';
+  app.use('/api/usuarios', usuario);
   
   import { router as artistasRouter } from '../src/domains/artistas/controllers/index';
   app.use('/api/artistas', artistasRouter);
@@ -30,7 +30,7 @@ const options: CorsOptions = {
   import { router as musicasRouter } from '../src/domains/musicas/controllers/index';
   app.use('/api/musicas', musicasRouter);
   
-  import { router as musicaUsuarioRouter } from '../src/domains/userSongs/controllers/index';
+  import { router as musicaUsuarioRouter } from '../src/domains/musicaUsuario/controllers/index';
   app.use('/api/musicaUsuario', musicaUsuarioRouter);
   
   import { errorHandler } from '../src/middlewares/error-handler';
