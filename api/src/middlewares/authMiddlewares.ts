@@ -1,10 +1,11 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const Usuario = require('../domains/usuarios/models/Usuario');
-const PermissionError = require("../../errors/PermissionError");
+import jwt from 'jsonwebtoken';
+import { compare } from 'bcrypt';
+import { Usuario } from '../domains/usuarios/models/Usuario';
+import { PermissionError } from "../../errors/PermissionError";
+import { Request, Response, NextFunction } from 'express';
 
-const checkRole = (cargos) => { 
-    return async (req, res, next) => {
+export const checkRole = (cargos) => { 
+    return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const cargo = await req.usuario.cargo;
             if(!cargos.include(cargo)){
@@ -16,7 +17,7 @@ const checkRole = (cargos) => {
     }
 };
 
-function generateJWT(usuario, res){
+function generateJWT(usuario, res: Response){
     const body = {
         id: usuario.id,
         nome: usuario.nome,
@@ -32,14 +33,14 @@ function generateJWT(usuario, res){
     });
 };
 
-async function loginMiddleware(req, res, next){
+export async function loginMiddleware(req: Request, res: Response, next: NextFunction){
     try{
         const usuario = await Usuario.findOne({where: {email: req.body.email}});
 
         if(!usuario){
             throw new PermissionError('E-mail e/ou senha incorretos');
         } else{
-            const matchingSenha = await bcrypt.compare(req.body.senha, usuario.senha);
+            const matchingSenha = await compare(req.body.senha, usuario.senha);
 
             if(!matchingSenha){
                 throw new PermissionError('E-mail e/ou senha incorretos');
@@ -54,7 +55,7 @@ async function loginMiddleware(req, res, next){
     }
 }; 
 
-function cookieExtractor(req){
+function cookieExtractor(req: Request){
     let token = null;
 
     if(req && req.cookies){
@@ -64,7 +65,7 @@ function cookieExtractor(req){
     return token;
 }
 
-function verifyJWT(req, res, next){
+export function verifyJWT(req: Request, res: Response, next: NextFunction){
     try {
         const token = cookieExtractor(req);
         if(token){
@@ -79,7 +80,7 @@ function verifyJWT(req, res, next){
     }
 };
 
-async function notLoggedIn(req, res, next){ 
+export async function notLoggedIn(req: Request, res: Response, next: NextFunction){ 
     try{ 
         const token = cookieExtractor(req); 
         if(token){ 
@@ -90,8 +91,3 @@ async function notLoggedIn(req, res, next){
     catch(error){ 
         next(error); 
     }};
-
-module.exports = {loginMiddleware,
-    verifyJWT,
-    checkRole,
-    notLoggedIn};
