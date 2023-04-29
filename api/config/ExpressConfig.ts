@@ -1,15 +1,19 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+import express, { Express } from 'express';
+import cors, { CorsOptions } from 'cors';
+import cookieParser from 'cookie-parser';
 
-const express = require("express");
-const app = express();
+dotenv.config();
 
-const cors = require("cors");
-app.use(cors({
+export const app: Express = express();
+
+const options: CorsOptions = {
     origin: process.env.CLIENT_URL,
     credentials: true
-}));
+};
 
-const cookieParser = require('cookie-parser');
+app.use(cors(options));
+
 app.use(cookieParser());
 
 app.use(express.urlencoded({
