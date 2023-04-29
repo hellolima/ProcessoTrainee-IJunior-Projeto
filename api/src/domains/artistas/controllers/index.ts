@@ -1,18 +1,20 @@
-const router = require('express').Router();
-const ArtistaServices = require('../services/ArtistaServices');
-const errorHandler = require("../../../middlewares/errorHandler");
-const {logginMiddleware,
+import { Router, Request, Response, NextFunction } from 'express';
+import { ArtistaServices } from '../services/ArtistaServices'
+import { errorHandler } from "../../../middlewares/errorHandler";
+import{loginMiddleware,
     verifyJWT,
     checkRole,
-    notLoggedIn} = require('../../../middlewares/authMiddlewares');
-const cargoUsuario = require('../../../../constants/cargoUsuario');
-const Artista = require("../models/Artista");
-const checkParams = require('../../../middlewares/checkParams');
+    notLoggedIn} from '../../../middlewares/authMiddlewares';
+import { cargoUsuario } from '../../../../constants/cargoUsuario';
+import { Artista } from "../models/Artista";
+import { checkParams } from '../../../middlewares/checkParams';
+
+export const router = Router();
 
 //Adiciona um artista ao banco de dados
 router.post('/criar', 
     checkParams("Artista"), 
-    async(req, res, next) =>{
+    async(req: Request, res: Response, next: NextFunction) =>{
     const body = req.body;
     try{
         await ArtistaServices.criar(body);
@@ -24,7 +26,7 @@ router.post('/criar',
 
 //Lista todas as músicas de um artista pelo id do artista
 router.get("/listarArtista",
-    async(req, res, next) => {
+    async(req: Request, res: Response, next: NextFunction) => {
     const _id = req.body.id;
     try {
         const musicas = await ArtistaServices.listarArtista(_id);
@@ -38,7 +40,7 @@ router.get("/listarArtista",
 router.put("/atualizar", 
     checkRole(cargoUsuario.ADMIN),
     checkParams("Artista"), 
-    async(req, res, next) => {
+    async(req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try{
         await ArtistaServices.atualizar(body);
@@ -51,7 +53,7 @@ router.put("/atualizar",
 //Remove um artista e todas as músicas dele do banco de dados
 router.delete("/remover", 
     checkRole(cargoUsuario.ADMIN), 
-    async(req, res, next) => {
+    async(req: Request, res: Response, next: NextFunction) => {
     const id = req.body.id;
     try{
         await ArtistaServices.remover(id);

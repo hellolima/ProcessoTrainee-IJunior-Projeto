@@ -1,18 +1,22 @@
-const UsuarioService = require('../services/UsuarioServices');
-const router = require('express').Router();
-const {loginMiddleware,
+import { Router, Request, Response, NextFunction } from 'express';
+import { UsuarioServices } from '../services/UsuarioServices'
+import { errorHandler } from "../../../middlewares/errorHandler";
+import{loginMiddleware,
     verifyJWT,
     checkRole,
-    notLoggedIn} = require('../../../middlewares/authMiddlewares');
-const errorHandler = require("../../../middlewares/errorHandler");
-const checkParams = require("../../../middlewares/checkParams");
+    notLoggedIn} from '../../../middlewares/authMiddlewares';
+import { cargoUsuario } from '../../../../constants/cargoUsuario';
+import { Usuario } from "../models/Usuario";
+import { checkParams } from '../../../middlewares/checkParams';
+
+export const router = Router();
 
 router.post('/login', notLoggedIn, loginMiddleware);
 
 //Realiza o logout limpando o cookie
 router.post('/logout',
     verifyJWT,
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
         try {
             res.clearCookie('jwt');
             res.status(200).json('Logout realizado com sucesso');
@@ -24,10 +28,10 @@ router.post('/logout',
 //Adiciona um usuário ao banco de dados
 router.post('/criar', 
     checkParams("Usuario"), 
-    async(req, res, next) =>{
+    async(req: Request, res: Response, next: NextFunction) =>{
     const body = req.body;
     try{
-        await UsuarioService.criar(body);
+        await UsuarioServices.criar(body);
         res.status(201).json('Usuario criado com sucesso!');
     }catch(error){
         next(error);
@@ -38,10 +42,10 @@ router.post('/criar',
 router.put("/atualizar/:id",
     verifyJWT,
     checkParams("Usuario"),
-    async(req, res, next) => {
+    async(req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try {
-        await UsuarioService.atualizar(req.params.id, body, req.usuario);
+        await UsuarioServices.atualizar(req.params.id, body, req.usuario);
         res.status(200).json("Usuário atualizado");
     } catch(error) {
         next(error);
@@ -49,10 +53,10 @@ router.put("/atualizar/:id",
 });
 
 //Deleta um usuário do banco de dados.
-router.delete("/remover", async(req, res, next) => {
+router.delete("/remover", async(req: Request, res: Response, next: NextFunction) => {
     const id = req.body.id;
     try{
-        await UsuarioService.remover(id);
+        await UsuarioServices.remover(id);
         res.status(200).json("Usuário excluído");
     } catch(error) {
         next(error);
