@@ -1,6 +1,6 @@
-const { INET } = require("sequelize");
-const InvalidParamError = require("../../errors/InvalidParamError");
-const Regex = require("../../constants/Regex");
+import { INET } from "sequelize";
+import { InvalidParamError } from "../../errors/InvalidParamError";
+import { Regex } from "../../constants/Regex";
 
 const checkParams = (modelo) => { 
     return async (req, res, next) => {

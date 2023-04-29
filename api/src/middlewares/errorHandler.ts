@@ -1,4 +1,6 @@
-function errorHandler(erro, req, res, next){
+import { Request, Response, NextFunction} from 'express';
+
+export function errorHandler(erro, req: Request, res: Response, nex: NextFunction){
     if(erro.name === "QueryError"){
         res.status(400).json({erro: erro.message});
     } 
@@ -11,5 +13,3 @@ function errorHandler(erro, req, res, next){
     else
         res.status(500).json({erro: "Erro no servidor"});
 }
-
-module.exports = errorHandler;
