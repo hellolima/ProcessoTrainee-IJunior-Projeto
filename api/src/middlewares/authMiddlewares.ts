@@ -3,11 +3,12 @@ import { compare } from 'bcrypt';
 import { Usuario } from '../domains/usuarios/models/Usuario';
 import { PermissionError } from "../../errors/PermissionError";
 import { Request, Response, NextFunction } from 'express';
+import { PayloadParams } from '../domains/usuarios/types/PayloadParams';
 
-export const checkRole = (cargos) => { 
+export const checkRole = (usuario: PayloadParams, cargos) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const cargo = await req.usuario.cargo;
+            const cargo = await usuario.cargo;
             if(!cargos.include(cargo)){
                 throw new PermissionError("Acesso não autorizado");
             } next();
@@ -17,7 +18,7 @@ export const checkRole = (cargos) => {
     }
 };
 
-function generateJWT(usuario, res: Response){
+function generateJWT(usuario: PayloadParams, res: Response){
     const body = {
         id: usuario.id,
         nome: usuario.nome,
@@ -65,14 +66,14 @@ function cookieExtractor(req: Request){
     return token;
 }
 
-export function verifyJWT(req: Request, res: Response, next: NextFunction){
+export function verifyJWT(usuario: PayloadParams, req: Request, res: Response, next: NextFunction){
     try {
         const token = cookieExtractor(req);
         if(token){
             const decodificado = jwt.verify(token, process.env.SECRET_KEY);
-            req.usuario = decodificado.usuario;
+            usuario = decodificado.usuario;
         }
-        if(!req.usuario){
+        if(!usuario){
             throw new PermissionError('Você precisa estar logado para realizar essa ação!');
         } next();
     } catch (error) {
