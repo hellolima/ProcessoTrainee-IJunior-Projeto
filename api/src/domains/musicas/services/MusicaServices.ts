@@ -1,12 +1,13 @@
-const Musica = require("../models/Musica");
-const Artista = require("../../artistas/models/Artista");
-const QueryError = require("../../../../errors/QueryError");
+import {Musica, MusicaInterface} from "../models/Musica";
+import {Artista} from "../../artistas/models/Artista";
+import { QueryError } from "../../../../errors/QueryError";
+import { Attributes } from "sequelize";
 
 
 
-class MusicaServices{
+class MusicaServicesClasse{
     /** @brief Adiciona uma música ao banco de dados e relaciona ela com um artista já existente.  */
-    async criar(body){
+    async criar(body: Attributes<MusicaInterface>){
         const artista = await Artista.findByPk(body.artistaId);
         if(!artista){
             throw new QueryError("Artista não encontrado");
@@ -25,7 +26,7 @@ class MusicaServices{
     }
 
     /** @brief Retorna a música que tem o mesmo ID informado. */
-    async filtrarID(_id){
+    async filtrarID(_id: string){
         const musicas = await Musica.findByPk(_id);
         if(!musicas)
             throw new QueryError("Música não encontrada");
@@ -34,7 +35,7 @@ class MusicaServices{
     }
 
     /** @brief Retorna o artista da música pelo ID de uma música. */
-    async pegarArtista(id){
+    async pegarArtista(id: Attributes<MusicaInterface>){
         const musica = await Musica.findOne({where: {id : id}});
         if(!musica)
             throw new QueryError("Música não encontrada");
@@ -44,12 +45,12 @@ class MusicaServices{
     }
 
     /** @brief Atualiza uma música já existente no banco de dados. */
-    async atualizar(body){
+    async atualizar(body: Attributes<MusicaInterface>){
         let musica = await Musica.findByPk(body.id);
         if(!musica)
             throw new QueryError("Música não encontrada");
         else{
-            musica = await Musica.update(
+            await Musica.update(
                 {
                     foto: body.foto,
                     titulo: body.titulo
@@ -62,7 +63,7 @@ class MusicaServices{
     }
 
     /** @brief Remove uma música já existente no banco de dados. */
-    async remover(id){
+    async remover(id: string){
         const musica = await Musica.findByPk(id);
         if(!musica)
             throw new QueryError("Música não encontrada");
@@ -72,4 +73,4 @@ class MusicaServices{
     }
 };
 
-module.exports = new MusicaServices();
+export const MusicaServices = new MusicaServicesClasse();

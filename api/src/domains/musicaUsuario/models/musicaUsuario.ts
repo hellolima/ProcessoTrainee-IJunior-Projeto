@@ -7,7 +7,7 @@ interface musicaUsuario extends Model<InferAttributes<musicaUsuario>, InferCreat
   id: CreationOptional<string>;
 }
 
-export const musicaUsuario = sequelize.define('musicaUsuario', {
+export const musicaUsuario = sequelize.define<musicaUsuario>('musicaUsuario', {
     id:{
       type: DataTypes.INTEGER,
       primaryKey: true,

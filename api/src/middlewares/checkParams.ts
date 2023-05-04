@@ -2,7 +2,7 @@ import { INET } from "sequelize";
 import { InvalidParamError } from "../../errors/InvalidParamError";
 import { Regex } from "../../constants/Regex";
 
-const checkParams = (modelo) => { 
+export const checkParams = (modelo) => { 
     return async (req, res, next) => {
         try{
             switch (modelo) {

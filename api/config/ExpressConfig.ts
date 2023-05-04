@@ -22,16 +22,16 @@ app.use(express.urlencoded({
 
 app.use(express.json());
 
-const musicaRouter = require("../src/domains/Musicas/controllers/index");
+import { router as musicaRouter } from '../src/domains/musicas/controllers/index';
 app.use("/api/musicas", musicaRouter);
 
-const usuariosRouter = require("../src/domains/Usuarios/controllers/index");
+import { router as usuariosRouter } from '../src/domains/usuarios/controllers/index';
 app.use("/api/usuarios", usuariosRouter);
 
-const artistasRouter = require("../src/domains/Artistas/controllers/index");
+import { router as artistasRouter } from '../src/domains/artistas/controllers/index';
 app.use("/api/artistas", artistasRouter);
 
-const musicausuarioRouter = require("../src/domains/musicaUsuario/controllers/index");
+import { router as musicausuarioRouter} from '../src/domains/musicaUsuario/controllers/index';
 app.use("/api/musicaUsuario", musicausuarioRouter);
 
 module.exports = app;

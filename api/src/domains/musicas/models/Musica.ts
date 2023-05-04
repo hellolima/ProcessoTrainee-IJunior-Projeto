@@ -7,9 +7,10 @@ export interface MusicaInterface extends Model<InferAttributes<MusicaInterface>,
   titulo: string;
   foto: string;
   categoria: string;
+  artistaId: string
 };
 
-export const Musica = sequelize.define('Musica', {
+export const Musica = sequelize.define<MusicaInterface>('Musica', {
   id:{
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -26,6 +27,10 @@ export const Musica = sequelize.define('Musica', {
   },
   categoria:{
     type: DataTypes.STRING,
+    allowNull: false
+  },
+  artistaId:{
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 });

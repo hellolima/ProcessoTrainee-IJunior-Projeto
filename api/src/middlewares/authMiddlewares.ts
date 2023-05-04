@@ -9,7 +9,7 @@ import { getEnv } from '../../utils/functions/getEnv';
 export const checkRole = (usuario: PayloadParams, cargos) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const cargo = await usuario.cargo;
+            const cargo = usuario.cargo;
             if(!cargos.include(cargo)){
                 throw new PermissionError("Acesso não autorizado");
             } next();

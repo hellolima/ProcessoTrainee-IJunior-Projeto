@@ -10,7 +10,7 @@ export interface UserInterface extends Model<InferAttributes<UserInterface>, Inf
     cargo: string;
   }
 
-export const Usuario = sequelize.define('Usuario', {
+export const Usuario = sequelize.define<UserInterface>('Usuario', {
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
