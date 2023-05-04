@@ -1,6 +1,6 @@
 import { app } from './config/ExpressConfig';
-import dotenv  from 'dotenv';
+import { getEnv } from './utils/functions/getEnv';
 
-const porta = process.env.PORT;
+const porta = getEnv('PORT');
 
 app.listen(porta, () => {console.log(`Servidor rodando na porta ${porta}`)});

@@ -1,9 +1,10 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { Usuario } from '../domains/usuarios/models/Usuario';
 import { PermissionError } from "../../errors/PermissionError";
 import { Request, Response, NextFunction } from 'express';
 import { PayloadParams } from '../domains/usuarios/types/PayloadParams';
+import { getEnv } from '../../utils/functions/getEnv';
 
 export const checkRole = (usuario: PayloadParams, cargos) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -26,11 +27,11 @@ function generateJWT(usuario: PayloadParams, res: Response){
         cargo: usuario.cargo,
     };
 
-    const token = jwt.sign({ usuario: body}, process.env.SECRET_KEY, { expiresIn: process.env.JWT_EXPIRATION});
+    const token = jwt.sign({ usuario: body}, getEnv('SECRET_KEY'), { expiresIn: getEnv('JWT_EXPIRATION')});
 
     res.cookie('jwt', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
+        secure: getEnv('NODE_ENV') !== 'development',
     });
 };
 
@@ -70,7 +71,7 @@ export function verifyJWT(usuario: PayloadParams, req: Request, res: Response, n
     try {
         const token = cookieExtractor(req);
         if(token){
-            const decodificado = jwt.verify(token, process.env.SECRET_KEY);
+            const decodificado = jwt.verify(token, getEnv('SECRET_KEY')) as JwtPayload;
             usuario = decodificado.usuario;
         }
         if(!usuario){
