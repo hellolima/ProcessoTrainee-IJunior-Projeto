@@ -52,6 +52,4 @@ export const checkParams = (modelo) => {
             next(erro);
         }
     }
-}
-
-module.exports = checkParams;
+};
