@@ -17,6 +17,7 @@ interface Env {
 	APP_URL: string;
 } 
 
+export {}
 declare global {
     namespace Express {
         interface Request{
