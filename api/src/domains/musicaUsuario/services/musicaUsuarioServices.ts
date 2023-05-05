@@ -1,11 +1,12 @@
-const musicaUsuario = require('../models/musicaUsuario');
-const Musica = require('../../musicas/models/Musica');
-const Usuario = require("../../usuarios/models/Usuario");
-const QueryError = require("../../../../errors/QueryError");
+import {musicaUsuario, musicaUsuarioInterface} from "../models/musicaUsuario";
+import { Musica } from "../../musicas/models/Musica";
+import { Usuario } from "../../usuarios/models/Usuario";
+import { QueryError } from "../../../../errors/QueryError";
+import { Attributes } from "sequelize";
 
-class musicaUsuarioService{
+class musicaUsuarioServiceClasse{
     /** @brief Relaciona uma música existente a um usuário existente no banco de dados. */
-    async criar(body){
+    async criar(body: Attributes<musicaUsuarioInterface>){
         const musica = await Musica.findByPk(body.MusicaId);
         const usuario = await Usuario.findByPk(body.UsuarioId);
         if(!musica || !usuario)
@@ -26,4 +27,4 @@ class musicaUsuarioService{
     }
 };
 
-module.exports = new musicaUsuarioService();
+export const musicaUsuarioServices = new musicaUsuarioServiceClasse();

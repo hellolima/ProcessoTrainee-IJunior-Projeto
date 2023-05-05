@@ -3,21 +3,37 @@ import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOpt
 import { Musica } from '../../musicas/models/Musica';
 import { Usuario } from '../../usuarios/models/Usuario';
 
-interface musicaUsuario extends Model<InferAttributes<musicaUsuario>, InferCreationAttributes<musicaUsuario>> {
+export interface musicaUsuarioInterface extends Model<InferAttributes<musicaUsuarioInterface>, InferCreationAttributes<musicaUsuarioInterface>> {
   id: CreationOptional<string>;
+  UsuarioId: string;
+  MusicaId: string;
 }
 
-export const musicaUsuario = sequelize.define<musicaUsuario>('musicaUsuario', {
+export const musicaUsuario = sequelize.define<musicaUsuarioInterface>('musicaUsuario', {
     id:{
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
+    },
+    UsuarioId:{
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    MusicaId:{
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
 }); 
 
-Usuario.belongsToMany(Musica, {through: musicaUsuario});
-Musica.belongsToMany(Usuario, {through: musicaUsuario});
+Usuario.belongsToMany(Musica, {
+  through: musicaUsuario,
+  foreignKey: "UsuarioId",  
+});
+Musica.belongsToMany(Usuario, {
+  through: musicaUsuario,
+  foreignKey: "MusicaId",
+});
 
 // musicaUsuario.sync({alter: false, force: false})
 //     .then(() => {

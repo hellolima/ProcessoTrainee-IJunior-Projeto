@@ -1,13 +1,14 @@
-const Usuario = require('../models/Usuario');
-const QueryError = require("../../../../errors/QueryError");
-const PermissionError = require('../../../../errors/PermissionError');
-const bcrypt = require('bcrypt');
-const cargoUsuario = require('../../../../constants/cargoUsuario');
+import {UserInterface, Usuario} from "../models/Usuario";
+import {QueryError} from "../../../../errors/QueryError";
+import {PermissionError} from "../../../../errors/PermissionError";
+import bcrypt from "bcrypt";
+import { cargoUsuario } from "../../../../constants/cargoUsuario";
+import { Attributes } from "sequelize";
 
-class UsuarioService{
+class UsuarioServicesClasse{
 
     /** @brief Criptografa a senha. */
-    async criptografarSenha(senha){
+    async criptografarSenha(senha: string){
         const saltRounds = 10;
         const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
 
@@ -15,7 +16,7 @@ class UsuarioService{
     }
 
     /** @brief Cria um usuário em que o cargo só pode ser user.*/
-    async criar(body){
+    async criar(body: Attributes<UserInterface>){
         if(body.cargo == cargoUsuario.ADMIN){
             throw new PermissionError('Não é possível criar um usuário com o cargo de administrador');
         };
@@ -41,25 +42,26 @@ class UsuarioService{
             await Usuario.create(usuario);
         }
     }
+
     /** @brief Atualiza um usuário já existente.*/
-    async atualizar(id, body, usuarioLogado){
-        const usuario = await this.getById(id);
+    async atualizar(id: string, body: Attributes<UserInterface>, usuarioLogado: Attributes<UserInterface>){
+        const usuario = await Usuario.findByPk(id);
 
         if(usuarioLogado.cargo != cargoUsuario.ADMIN && usuarioLogado.id != id){
             throw new PermissionError("Você não tem permisão para editar outro usuário!");
         } 
-        if(body.cargo && usuarioLogado != cargoUsuario.ADMIN){
+        if(body.cargo && usuarioLogado.cargo != cargoUsuario.ADMIN){
             throw new PermissionError("Você não tem permissão para editar seu cargo!");
         }
         if(body.senha){
-            body.senha = await this.senhaCriptografada(body.senha);
+            body.senha = await this.criptografarSenha(body.senha);
         }
 
         await usuario.update(body);
     }
 
     /** @brief Remove um usuário.*/
-    async remover(id){
+    async remover(id: string){
         const usuario = await Usuario.findByPk(id);
         if(!usuario)
             throw new QueryError("Usuário não encontrado");
@@ -68,4 +70,4 @@ class UsuarioService{
     }
 };
 
-module.exports = new UsuarioService();
+export const UsuarioServices = new UsuarioServicesClasse();
