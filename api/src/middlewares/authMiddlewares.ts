@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 import { PayloadParams } from '../domains/usuarios/types/PayloadParams';
 import { getEnv } from '../../utils/functions/getEnv';
 
+//********** tirar esse usuario(a funcao deve receber um parametro so) e trabalhar com usuario trabalhando com req.user
 export const checkRole = (usuario: PayloadParams, cargos) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
