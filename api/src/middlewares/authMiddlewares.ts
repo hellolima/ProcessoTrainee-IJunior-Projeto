@@ -7,11 +7,11 @@ import { PayloadParams } from '../domains/usuarios/types/PayloadParams';
 import { getEnv } from '../../utils/functions/getEnv';
 
 //********** tirar esse usuario(a funcao deve receber um parametro so) e trabalhar com usuario trabalhando com req.user
-export const checkRole = (usuario: PayloadParams, cargos) => { 
+export const checkRole = (cargos: string) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const cargo = usuario.cargo;
-            if(!cargos.include(cargo)){
+            const cargo = req.usuario.cargo;
+            if(!cargos.includes(cargo)){
                 throw new PermissionError("Acesso não autorizado");
             } next();
         } catch(erro){

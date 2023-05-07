@@ -1,7 +1,7 @@
 import { Musica } from "../models/Musica";
 import { MusicaInterface } from "../models/Musica";
 import { MusicaServices } from "./MusicaServices";
-import { QueryError } from "sequelize";
+import { QueryError } from "../../../../errors/QueryError";
 import {expect, jest, test, describe} from "@jest/globals";
 import { beforeEach } from "node:test";
 
@@ -24,7 +24,7 @@ describe("create", () => {
 });
 
 test("Recebe um objeto com valores da música => Cria uma Música no banco", async () => {
-    const musica_info = {
+    const mockBodyMusica = {
         titulo: "Rave",
         foto: "teste",
         categoria: "Phonk",
@@ -33,8 +33,9 @@ test("Recebe um objeto com valores da música => Cria uma Música no banco", asy
 
     (Musica.create as jest.MockedFunction<typeof Musica.create>).mockResolvedValue({});
 
-    await MusicaServices.criar(musica_info);
-    expect(Musica.create).toHaveBeenCalledWith(musica_info);
+    await MusicaServices.criar(mockBodyMusica);
+
+    expect(Musica.create).toHaveBeenCalledWith(mockBodyMusica);
     expect(Musica.create).toHaveBeenCalledTimes(1);
 });
 

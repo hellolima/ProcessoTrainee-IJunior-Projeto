@@ -1,9 +1,7 @@
 import {Musica, MusicaInterface} from "../models/Musica";
 import {Artista} from "../../artistas/models/Artista";
 import { QueryError } from "../../../../errors/QueryError";
-import { Attributes } from "sequelize";
-
-
+import { Attributes } from 'sequelize/types';
 
 class MusicaServicesClasse{
     /** @brief Adiciona uma música ao banco de dados e relaciona ela com um artista já existente.  */
