@@ -1,16 +1,17 @@
-import { INET } from "sequelize";
+import { INET, Model} from "sequelize";
 import { InvalidParamError } from "../../errors/InvalidParamError";
 import { Regex } from "../../constants/Regex";
+import { NextFunction } from "express";
 
-export const checkParams = (modelo) => { 
-    return async (req, res, next) => {
+export const checkParams = (modelo: typeof Model) => { 
+    return async (req: Request, res: Response, next: NextFunction) => {
         try{
-            switch (modelo) {
+            switch (modelo.name) {
                 case "Musica":
-                    if(!req.body.foto || !req.body.titulo || !req.body.categoria || !req.body.artistaId)
-                        throw new InvalidParamError("Parâmetros Inválidos");
-                    if(req.body.foto == null || !req.body.titulo == null || !req.body.categoria == null || !req.body.artistaId == null)
-                        throw new InvalidParamError("Parâmetros Inválidos");
+                    const body_musica = ["foto", "titulo", "categoria", "artistaId"];
+                    Checar_Vazio(req.body, body_musica);
+                    Checar_Nulos(req.body, body_musica);
+
                     if(Regex.FOTO.test(req.body.foto) === false)
                         throw new InvalidParamError("Foto Inválida");
                     if(Regex.CATEGORIA.test(req.body.categoria) === false)
@@ -18,10 +19,10 @@ export const checkParams = (modelo) => {
                     break;
 
                 case "Artista":
-                    if(!req.body.nome || !req.body.nacionalidade || !req.body.foto)
-                        throw new InvalidParamError("Parâmetros Inválidos");
-                    if(req.body.nome == null|| req.body.nacionalidade == null || req.body.foto == null)
-                        throw new InvalidParamError("Parâmetros Inválidos");
+                    const body_artista = ["nome", "nacionalidade", "foto"];
+                    Checar_Vazio(req.body, body_artista);
+                    Checar_Nulos(req.body, body_artista);
+
                     if(Regex.NACIONALIDADE.test(req.body.nacionalidade) == false)
                         throw new InvalidParamError("Nacionalidade Inválida");
                     if(Regex.FOTO.test(req.body.foto) === false)
@@ -29,19 +30,18 @@ export const checkParams = (modelo) => {
                     break;
 
                 case "Usuario":
-                    if(!req.body.nome || !req.body.email || !req.body.senha || !req.body.cargo)
-                        throw new InvalidParamError("Parâmetros Inválidos");
-                    if(req.body.nome == null|| req.body.email == null || req.body.senha == null || req.body.cargo == null)
-                        throw new InvalidParamError("Parâmetros Inválidos");
+                    const body_usuario = ["nome", "email", "senha", "cargo"];
+                    Checar_Vazio(req.body, body_usuario);
+                    Checar_Nulos(req.body, body_usuario);
+
                     if(Regex.EMAIL.test(req.body.email) === false)
                         throw new InvalidParamError("E-mail Inválido");
                     break;
 
                 case "musicaUsuario":
-                    if(!req.body.MusicaId || !req.body.UsuarioId)
-                        throw new InvalidParamError("Parâmetros Inválidos");
-                    if(req.body.MusicaId == null|| req.body.UsuarioId == null)
-                        throw new InvalidParamError("Parâmetros Inválidos");
+                    const body_musicausuario = ["MusicaId", "UsuarioId"];
+                    Checar_Vazio(req.body, body_musicausuario);
+                    Checar_Nulos(req.body, body_musicausuario);
                     break;
                         
                 default:
@@ -53,3 +53,19 @@ export const checkParams = (modelo) => {
         }
     }
 };
+
+function Checar_Nulos(body: any, parametros: string[]){
+    for(const param of parametros){
+        if(body[param] === null){
+            throw new InvalidParamError("Parâmetros Inválidos");
+        }
+    }
+}
+
+function Checar_Vazio(body: any, parametros: string[]){
+    for(const param of parametros){
+        if(!body[param]){
+            throw new InvalidParamError("Parâmetros Inválidos");
+        }
+    }
+}

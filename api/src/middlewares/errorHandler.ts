@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction} from 'express';
 
-export function errorHandler(erro, req: Request, res: Response, nex: NextFunction){
+export function errorHandler(erro: Error, req: Request, res: Response, next: NextFunction){
     if(erro.name === "QueryError"){
         res.status(400).json({erro: erro.message});
     } 
