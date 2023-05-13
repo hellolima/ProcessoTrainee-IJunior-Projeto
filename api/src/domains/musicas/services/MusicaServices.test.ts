@@ -21,23 +21,25 @@ describe("criar", () => {
         jest.resetAllMocks();
         jest.clearAllMocks();
     });
+
+    test("Recebe um objeto com valores da música => Cria uma Música no banco", async () => {
+        const mockBodyMusica = {
+            titulo: "Rave",
+            foto: "teste",
+            categoria: "Phonk",
+            artistaId: "1"
+        } as MusicaInterface;
+    
+        (Musica.create as jest.MockedFunction<typeof Musica.create>).mockResolvedValue({});
+    
+        await MusicaServices.criar(mockBodyMusica);
+    
+        expect(Musica.create).toHaveBeenCalledWith(mockBodyMusica);
+        expect(Musica.create).toHaveBeenCalledTimes(1);
+    });
 });
 
-test("Recebe um objeto com valores da música => Cria uma Música no banco", async () => {
-    const mockBodyMusica = {
-        titulo: "Rave",
-        foto: "teste",
-        categoria: "Phonk",
-        artistaId: "1"
-    } as MusicaInterface;
 
-    (Musica.create as jest.MockedFunction<typeof Musica.create>).mockResolvedValue({});
-
-    await MusicaServices.criar(mockBodyMusica);
-
-    expect(Musica.create).toHaveBeenCalledWith(mockBodyMusica);
-    expect(Musica.create).toHaveBeenCalledTimes(1);
-});
 
 describe("listarTodas", () => {
     beforeEach(() => {
