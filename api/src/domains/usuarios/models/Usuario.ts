@@ -2,7 +2,7 @@ import { sequelize } from '../../../../database/index';
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, HasManyAddAssociationMixin, HasManyRemoveAssociationMixin} from 'sequelize';
 import { cargoUsuario } from "../../../../constants/cargoUsuario";
 
-export interface UserInterface extends Model<InferAttributes<UserInterface>, InferCreationAttributes<UserInterface>> {
+export interface UsuarioInterface extends Model<InferAttributes<UsuarioInterface>, InferCreationAttributes<UsuarioInterface>> {
     id: CreationOptional<string>;
     nome: string;
     email: string;
@@ -10,7 +10,7 @@ export interface UserInterface extends Model<InferAttributes<UserInterface>, Inf
     cargo: string;
   }
 
-export const Usuario = sequelize.define<UserInterface>('Usuario', {
+export const Usuario = sequelize.define<UsuarioInterface>('Usuario', {
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
