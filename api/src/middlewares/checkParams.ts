@@ -12,7 +12,7 @@ export const checkParams = (modelo: typeof Model) => {
                     Checar_Vazio(req.body, body_musica);
                     Checar_Nulos(req.body, body_musica);
 
-                    if(Regex.FOTO.test(req.body.foto) === false)
+                    if(Regex.FOTO.test(req.body?.foto) === false)
                         throw new InvalidParamError("Foto Inválida");
                     if(Regex.CATEGORIA.test(req.body.categoria) === false)
                         throw new InvalidParamError("Categoria Inválida");

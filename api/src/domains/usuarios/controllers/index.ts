@@ -27,7 +27,7 @@ router.post('/logout',
 
 //Adiciona um usuário ao banco de dados
 router.post('/criar', 
-    checkParams("Usuario"), 
+    //checkParams("Usuario"), 
     async(req: Request, res: Response, next: NextFunction) =>{
     const body = req.body;
     try{
@@ -41,11 +41,11 @@ router.post('/criar',
 //Atualiza as informações de um usuário no banco de dados
 router.put("/atualizar/:id",
     verifyJWT,
-    checkParams("Usuario"),
+    //checkParams("Usuario"),
     async(req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try {
-        await UsuarioServices.atualizar(req.params.id, body, req.usuario);
+        await UsuarioServices.atualizar(req.params.id, body, req.);
         res.status(200).json("Usuário atualizado");
     } catch(error) {
         next(error);

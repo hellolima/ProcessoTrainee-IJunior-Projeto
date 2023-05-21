@@ -15,15 +15,13 @@ const options: CorsOptions = {
 
 app.use(cors(options));
 
-app.use(cookieParser());
+app.use(express.json());
 
-app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(express.urlencoded({
     extended:true
 }));
-
-app.use(express.json());
 
 import { router as musicaRouter } from '../src/domains/musicas/controllers/index';
 app.use("/api/musicas", musicaRouter);

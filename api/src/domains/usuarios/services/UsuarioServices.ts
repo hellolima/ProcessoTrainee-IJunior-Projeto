@@ -1,4 +1,4 @@
-import {UserInterface, Usuario} from "../models/Usuario";
+import {UsuarioInterface, Usuario} from "../models/Usuario";
 import {QueryError} from "../../../../errors/QueryError";
 import {PermissionError} from "../../../../errors/PermissionError";
 import bcrypt from "bcrypt";
@@ -16,7 +16,7 @@ class UsuarioServicesClasse{
     }
 
     /** @brief Cria um usuário em que o cargo só pode ser user.*/
-    async criar(body: Attributes<UserInterface>){
+    async criar(body: Attributes<UsuarioInterface>){
         if(body.cargo == cargoUsuario.ADMIN){
             throw new PermissionError('Não é possível criar um usuário com o cargo de administrador');
         };
@@ -44,7 +44,7 @@ class UsuarioServicesClasse{
     }
 
     /** @brief Atualiza um usuário já existente.*/
-    async atualizar(id: string, body: Attributes<UserInterface>, usuarioLogado: Attributes<UserInterface>){
+    async atualizar(id: string, body: Attributes<UsuarioInterface>, usuarioLogado: Attributes<UsuarioInterface>){
         const usuario = await Usuario.findByPk(id);
 
         if(usuarioLogado.cargo != cargoUsuario.ADMIN && usuarioLogado.id != id){
@@ -57,7 +57,7 @@ class UsuarioServicesClasse{
             body.senha = await this.criptografarSenha(body.senha);
         }
 
-        await usuario.update(body);
+        await usuario?.update(body);
     }
 
     /** @brief Remove um usuário.*/

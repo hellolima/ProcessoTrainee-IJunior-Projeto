@@ -13,7 +13,7 @@ export const router = Router();
 
 //Adiciona um artista ao banco de dados
 router.post('/criar', 
-    checkParams("Artista"), 
+    //checkParams("Artista"), 
     async(req: Request, res: Response, next: NextFunction) =>{
     const body = req.body;
     try{
@@ -39,7 +39,7 @@ router.get("/listarArtista",
 //Atualiza as informações de um artista no banco de dados
 router.put("/atualizar", 
     checkRole(cargoUsuario.ADMIN),
-    checkParams("Artista"), 
+    //checkParams("Artista"), 
     async(req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try{

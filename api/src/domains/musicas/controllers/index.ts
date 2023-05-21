@@ -13,7 +13,7 @@ export const router = Router();
 
 //Adiciona uma música ao banco de dados
 router.post('/criar', 
-    checkParams("Musica"),
+    //checkParams("Musica"),
     async(req: Request, res: Response, next: NextFunction) =>{
     try{
         await MusicaServices.criar(req.body);
@@ -58,7 +58,7 @@ router.get("/pegarArtista", async(req: Request, res: Response, next: NextFunctio
 //Atualiza as informações de uma música no banco de dados
 router.put("/atualizar", 
     checkRole(cargoUsuario.ADMIN),
-    checkParams("Musica"), 
+    //checkParams("Musica"), 
     async(req: Request, res: Response, next: NextFunction) => {
     const body = req.body;
     try {

@@ -10,7 +10,7 @@ import { getEnv } from '../../utils/functions/getEnv';
 export const checkRole = (cargos: string) => { 
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const cargo = req.usuario.cargo;
+            const cargo = (req as any).usuario!.cargo;
             if(!cargos.includes(cargo)){
                 throw new PermissionError("Acesso não autorizado");
             } next();
