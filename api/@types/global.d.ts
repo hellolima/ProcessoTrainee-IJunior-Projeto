@@ -15,9 +15,8 @@ interface Env {
 	NODE_ENV: string;
 	JWT_EXPIRATION: string;
 	APP_URL: string;
-} 
+}
 
-export {}
 declare global {
     namespace Express {
         interface Request{

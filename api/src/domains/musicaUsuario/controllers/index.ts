@@ -12,7 +12,7 @@ export const router = Router();
 
 //Relaciona uma música a um usuário.
 router.post('/criar', 
-    checkParams("musicaUsuario"), 
+    //checkParams("musicaUsuario"), 
     async(req: Request, res: Response, next: NextFunction) =>{
     const body = req.body;
     try{

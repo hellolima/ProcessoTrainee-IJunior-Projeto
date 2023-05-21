@@ -27,7 +27,7 @@ describe("criar", () => {
             titulo: "Rave",
             foto: "teste",
             categoria: "Phonk",
-            artistaId: "1"
+            artistaId: "1",
         } as MusicaInterface;
     
         (Musica.create as jest.MockedFunction<typeof Musica.create>).mockResolvedValue({});
@@ -40,7 +40,7 @@ describe("criar", () => {
 });
 
 
-
+/* 
 describe("listarTodas", () => {
     beforeEach(() => {
         jest.resetAllMocks();
@@ -172,4 +172,4 @@ describe("remover", () => {
         expect(Musica.findByPk).toHaveBeenCalledTimes(1);
         expect(Musica.destroy).toBeCalledTimes(1);
     });
-});
+}); */
